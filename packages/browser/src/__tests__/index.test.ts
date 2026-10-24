@@ -1,9 +1,14 @@
 /// <reference types="chrome" />
 import { describe, expectTypeOf, it } from 'vitest';
-import { browser, type Browser } from '../index';
+import { browser, type Browser } from '../index.js';
 
 describe('browser', () => {
   describe('types', () => {
+    it('should not resolve to any', () => {
+      expectTypeOf(browser).not.toBeAny();
+      expectTypeOf<Browser.runtime.Port>().not.toBeAny();
+    });
+
     it('should provide types via the Browser import', () => {
       expectTypeOf<Browser.runtime.MessageSender>().toEqualTypeOf<chrome.runtime.MessageSender>();
       expectTypeOf<Browser.storage.AreaName>().toEqualTypeOf<chrome.storage.AreaName>();

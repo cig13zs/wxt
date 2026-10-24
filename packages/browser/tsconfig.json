@@ -1,4 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {}
+  "compilerOptions": {
+    // Check the hand-written declaration files with the strictest resolution
+    // consumers might use, see https://github.com/wxt-dev/wxt/issues/1954
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  }
 }
