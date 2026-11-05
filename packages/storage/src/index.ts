@@ -60,8 +60,13 @@ function createStorage(): WxtStorage {
     return newFields;
   };
 
-  const getValueOrFallback = (value: any, fallback: any) =>
-    value ?? fallback ?? null;
+  const getValueOrFallback = (value: any, fallback: any) => {
+    if (value != null) return value;
+    if (fallback === undefined) return null;
+    // Clone so mutating the returned value does not mutate the shared fallback
+    // (see https://github.com/wxt-dev/wxt/issues/1766).
+    return fallback == null ? null : structuredClone(fallback);
+  };
 
   const getMetaValue = (properties: any) =>
     properties != null &&

@@ -1078,6 +1078,25 @@ describe('Storage Utils', () => {
     });
 
     describe('getValue', () => {
+      it('should clone fallback so mutating getValue result does not mutate shared fallback', async () => {
+        const fallback: string[] = [];
+        const item = storage.defineItem<string[]>('local:list', {
+          fallback,
+        });
+
+        const first = await item.getValue();
+        first.push('test');
+        await item.setValue(first);
+
+        await item.removeValue();
+        const second = await item.getValue();
+        second.push('test');
+
+        expect(fallback).toEqual([]);
+        expect(second).toEqual(['test']);
+        expect(await item.getValue()).toEqual([]);
+      });
+
       it('should return the value from storage', async () => {
         const expected = 2;
         const item = storage.defineItem<number>(`local:count`);
